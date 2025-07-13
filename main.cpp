@@ -64,8 +64,7 @@ void imprimirOrdemDecrescente(NoArvore* raiz) {
 HANDLE snapShotProcessos()
 {
     // CreateToolhelp32Snapshot é uma função que cria um snapshot de todos os processos em execução no sistema
-    // HANDLE é um tipo de dado que representa um identificador para um objeto do Windows (um objeto windows pode ser um processo, thread, etc.)
-    // TH32CS_SNAPPROCESS é uma constante que indica que queremos um snapshot de todos os processos
+    // TH32CS_SNAPPROCESS é uma constante que indica que queremos um snapshot de processos
     // 0 indica que não estamos filtrando por PID específico, ou seja, queremos todos
     HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0); 
     
@@ -79,7 +78,6 @@ HANDLE snapShotProcessos()
 
 void encerrarProcesso(DWORD pid)
 {
-    // parâmetros de OpenProcess:
     // PROCESS_TERMINATE permite terminar o processo
     // FALSE indica que não estamos solicitando acesso de thread
     // pid é o ID do processo que queremos encerrar
@@ -96,12 +94,11 @@ void encerrarProcesso(DWORD pid)
         std::cout << "Processo com PID: " << pid << " encerrado com sucesso." << std::endl;
     }
 
-    CloseHandle(hProcess); // Fecha o handle do processo
+    CloseHandle(hProcess);
 }
 
 SIZE_T memoryInfo(PROCESSENTRY32W& pe32)
 {
-    // parâmetros desse OpenProcess:
     // PROCESS_QUERY_INFORMATION permite obter informações sobre o processo
     // PROCESS_VM_READ permite ler a memória do processo
     // FALSE indica que não estamos solicitando acesso de thread
@@ -180,7 +177,7 @@ void listaProcessos()
     if (raiz == nullptr) {
         std::cout << "Nenhum processo encontrado." << std::endl;
     } else {
-        imprimirOrdemDecrescente(raiz); // Imprime os processos em ordem
+        imprimirOrdemDecrescente(raiz); // Imprime os processos em ordem decrescente de uso de memória
     }
 
     CloseHandle(hSnapshot);
@@ -206,7 +203,7 @@ int main()
             case 2:
                 std::cout << "Digite o PID do processo que deseja encerrar: ";
                 std::cin >> pid;
-                encerrarProcesso(pid); // Chama a função para encerrar o processo
+                encerrarProcesso(pid);
                 break;
             case 0:
                 return 0; // Sai do programa
@@ -214,7 +211,7 @@ int main()
                 std::cout << "Opção inválida. Tente novamente." << std::endl;
         }
 
-        Sleep(1000); // Pausa por 1 segundo antes de atualizar a lista novamente
+        Sleep(3000); // Pausa por 1 segundo antes de atualizar a lista novamente
         
     }
 }
